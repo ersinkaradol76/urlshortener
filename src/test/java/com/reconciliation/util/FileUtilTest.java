@@ -9,13 +9,13 @@ import java.nio.file.Path;
 import org.junit.After;
 import org.junit.Test;
 
-import com.urlshortener.util.FileUtil;
+import com.urlshortener.util.RandomiseUtil;
 
 public class FileUtilTest {
 
 	@Test
 	public void uploadingFileCheckIfExist() throws Exception {
-		Path path = FileUtil.uploadCsvFile(FileUtilTestFixtures.sampleFile);
+		Path path = RandomiseUtil.uploadCsvFile(FileUtilTestFixtures.sampleFile);
 		assertTrue(Files.exists(path));
 		FileUtilTestFixtures.filesToBeDeleted.add(path);
 
@@ -23,8 +23,8 @@ public class FileUtilTest {
 
 	@Test
 	public void deletingUploadedFileCheckIfNotExist() throws Exception {
-		Path path = FileUtil.uploadCsvFile(FileUtilTestFixtures.sampleFile);
-		FileUtil.deleteCsvFile(path);
+		Path path = RandomiseUtil.uploadCsvFile(FileUtilTestFixtures.sampleFile);
+		RandomiseUtil.deleteCsvFile(path);
 		assertTrue(Files.notExists(path));
 		FileUtilTestFixtures.filesToBeDeleted.add(path);
 

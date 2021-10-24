@@ -1,0 +1,16 @@
+ <div id="messageReport" th:fragment="attributes"   class="pt-3">
+		<div class="container-fluid p-1 bg-info text-white" th:if="${message ne null}">
+			<div class="row">
+				<div class="col-md-11 mx-auto">
+					<h3 th:text="${message}"></h3>
+					<strong><p th:text="${header1}" th:if="${message ne null}"
+						class="alert alert-warning"></p></strong>
+<!-- 
+					<div th:replace="general.html"></div>
+					
+					<div th:replace="detail.html"></div>  -->
+				</div>
+			</div>
+		</div>
+
+
