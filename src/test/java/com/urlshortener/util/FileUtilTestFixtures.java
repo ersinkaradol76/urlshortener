@@ -1,4 +1,4 @@
-package com.reconciliation.util;
+package com.urlshortener.util;
 
 import java.nio.file.Path;
 import java.util.ArrayList;

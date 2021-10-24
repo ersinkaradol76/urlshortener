@@ -1,4 +1,4 @@
-package com.reconciliation.controller;
+package com.urlshortener.controller;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class UploadControllerTest {
+public class UrlShortenerControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -24,7 +24,7 @@ public class UploadControllerTest {
 	@Test
 	public void shouldReturnIndexPage() throws Exception {
 		this.mockMvc.perform(get("/")).andExpect(status().isOk())
-				.andExpect(content().string(containsString("Specify Files to Compare")));
+				.andExpect(content().string(containsString("Enter Url to Shorten")));
 	}
 
 }

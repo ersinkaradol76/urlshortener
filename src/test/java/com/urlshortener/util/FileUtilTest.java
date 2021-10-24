@@ -1,4 +1,4 @@
-package com.reconciliation.util;
+package com.urlshortener.util;
 
 import static org.junit.Assert.assertTrue;
 
@@ -9,13 +9,13 @@ import java.nio.file.Path;
 import org.junit.After;
 import org.junit.Test;
 
-import com.urlshortener.util.RandomiseUtil;
+import com.urlshortener.util.UrlShortenerUtil;
 
 public class FileUtilTest {
 
 	@Test
 	public void uploadingFileCheckIfExist() throws Exception {
-		Path path = RandomiseUtil.uploadCsvFile(FileUtilTestFixtures.sampleFile);
+		Path path = UrlShortenerUtil.uploadCsvFile(FileUtilTestFixtures.sampleFile);
 		assertTrue(Files.exists(path));
 		FileUtilTestFixtures.filesToBeDeleted.add(path);
 
@@ -23,8 +23,8 @@ public class FileUtilTest {
 
 	@Test
 	public void deletingUploadedFileCheckIfNotExist() throws Exception {
-		Path path = RandomiseUtil.uploadCsvFile(FileUtilTestFixtures.sampleFile);
-		RandomiseUtil.deleteCsvFile(path);
+		Path path = UrlShortenerUtil.uploadCsvFile(FileUtilTestFixtures.sampleFile);
+		UrlShortenerUtil.deleteCsvFile(path);
 		assertTrue(Files.notExists(path));
 		FileUtilTestFixtures.filesToBeDeleted.add(path);
 

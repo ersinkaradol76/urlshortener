@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+<title>RocketML URL Shortener Project</title>
+
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="icon" type="image/x-icon" href="icon/favicon.ico">
+</head>
+<body>
+
+	<section class="my-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-11 mx-auto">
+					<p th:text="${message}" th:if="${message ne null}"
+						class="alert alert-primary"></p>
+					<h2><img alt="RocketML" src="icon/favicon.ico"> Enter Url to Shorten</h2>
+					<form th:action="@{/shortUrlInFile}" method="post">
+					    <div>
+					        <label>URL:</label>
+					        <input type="url" name="url" placeholder="url" />
+					    </div>
+						<div class="col-md-1"><button type="submit" class="btn btn-primary">Shorten</button></div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
