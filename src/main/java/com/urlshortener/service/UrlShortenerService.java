@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
@@ -50,8 +51,18 @@ public class UrlShortenerService {
 		this.urlShortenerInFile = urlShortenerInFile;
 	}
 
-	// shortenURL
-	// the public method which can be called to shorten a given URL
+	/**
+	 *
+	 * This is the public method which can be called to shorten a given URL This
+	 * method stores the url and shortened url in two maps. In the process firstly,
+	 * it validates the url. Then checks if the url was stored before. If it is
+	 * stored before, returns the shortened url stored before. If it was not stored,
+	 * then generates a key and the stores key and url in the maps.
+	 *
+	 * @param longURL url that will be shortened
+	 * @return
+	 * @throws UrlShortenerException
+	 */
 	public UrlKey shortenURLInMemory(String longURL) throws UrlShortenerException {
 		UrlKey urlKey = null;
 		try {
@@ -62,7 +73,7 @@ public class UrlShortenerService {
 				urlKey = new UrlKey(shortURL, false);
 				logger.info("URL Key was generated: {} ", urlKey.getKey());
 			} else {
-				String key = getKeyInMemory(longURL);
+				String key = generateKeyInMemory();
 				String shortURL = UrlShortenerUtil.DOMAIN + "/" + key;
 				putKeyInMemoryMaps(key, longURL);
 				urlKey = new UrlKey(shortURL, true);
@@ -74,6 +85,18 @@ public class UrlShortenerService {
 		return urlKey;
 	}
 
+	/**
+	 *
+	 * This is the public method which can be called to shorten a given URL This
+	 * method stores the url and shortened url in two files. In the process firstly,
+	 * it validates the url. Then checks if the url was stored before. If it is
+	 * stored before, returns the shortened url stored before. If it was not stored,
+	 * then generates a key and the stores key and url in the files.
+	 *
+	 * @param longURL url that will be shortened
+	 * @return
+	 * @throws UrlShortenerException
+	 */
 	public UrlKey shortenURLInFile(String longURL) throws UrlShortenerException {
 
 		UrlKey urlKey = null;
@@ -92,7 +115,7 @@ public class UrlShortenerService {
 				urlKey = new UrlKey(shortURL, false);
 				logger.info("URL Key was generated: {} ", urlKey.getKey());
 			} else {
-				key = getKeyInFile(longURL);
+				key = generateKeyInFile();
 				String shortURL = UrlShortenerUtil.DOMAIN + "/" + key;
 				putKeyInFiles(key, longURL);
 				urlKey = new UrlKey(shortURL, true);
@@ -108,12 +131,16 @@ public class UrlShortenerService {
 
 	}
 
-	// This method should take care various issues with a valid url
-	// e.g. www.google.com,www.google.com/, http://www.google.com,
-	// http://www.google.com/
-	// all the above URL should point to same shortened URL
-	// There could be several other cases like these.
-	String preventSimilarUrlInsertion(String url) {
+	/**
+	 *
+	 * This method controls that the url is similar with a previous one such as
+	 * www.youtube.com, www.youtube.com/, http://www.youtube.com,
+	 * http://www.youtube.com/ all the above URL should point to same shortened URL.
+	 *
+	 * @param url the url that will be cleared
+	 * @return
+	 */
+	private String preventSimilarUrlInsertion(String url) {
 		if (url.substring(0, 7).equals("http://")) {
 			url = url.substring(7);
 		}
@@ -128,21 +155,49 @@ public class UrlShortenerService {
 		return url;
 	}
 
-
-	private String getKeyInMemory(String longURL) {
+	/**
+	 *
+	 * This method generates a key for memory process of the project
+	 *
+	 * @return the key generated
+	 */
+	private String generateKeyInMemory() {
 		return UrlShortenerUtil.generateKeyInMemory(urlShortenerInMemory);
 	}
 
+	/**
+	 *
+	 * This method stores the url and the key in the two maps. One is to get the url
+	 * by looking to the key and one is to control if the url is stored in the
+	 * memory.
+	 *
+	 * @param key     the generated key for the url
+	 * @param longURL the url that will be shortened
+	 */
 	private void putKeyInMemoryMaps(String key, String longURL) {
 		urlShortenerInMemory.getShortenedMap().put(key, longURL);
 		urlShortenerInMemory.getControlMap().put(longURL, key);
 	}
 
-	private String getKeyInFile(String longURL) throws UrlShortenerException {
+	/**
+	 *
+	 * This method generates a key for file process of the project
+	 *
+	 * @return the key generated
+	 */
+	private String generateKeyInFile() throws UrlShortenerException {
 		return UrlShortenerUtil.generateKeyInFile(urlShortenerInFile);
 	}
 
-	public String checkUrlInFile(String longUrl) throws UrlShortenerException {
+	/**
+	 *
+	 * This method checks the url-shorturl file to find url if it is stored before
+	 *
+	 * @param longUrl the url that will be shortened
+	 * @return
+	 * @throws UrlShortenerException
+	 */
+	private String checkUrlInFile(String longUrl) throws UrlShortenerException {
 		String key = null;
 		try (Scanner scanner = new Scanner(urlShortenerInFile.getControlFile())) {
 
@@ -162,7 +217,16 @@ public class UrlShortenerService {
 		return key;
 	}
 
-	public String checkKeyInFile(String key) throws UrlShortenerException {
+	/**
+	 *
+	 * This method checks the shorturl-url file to get the url corresponds to the
+	 * shorturl
+	 *
+	 * @param longUrl the url that will be shortened
+	 * @return
+	 * @throws UrlShortenerException
+	 */
+	private String checkKeyInFile(String key) throws UrlShortenerException {
 		String url = null;
 		try (Scanner scanner = new Scanner(urlShortenerInFile.getShortenedFile())) {
 
@@ -182,12 +246,22 @@ public class UrlShortenerService {
 		return url;
 	}
 
-	public void putKeyInFiles(String key, String longUrl) throws UrlShortenerException {
+	/**
+	 *
+	 * This method stores the url and the key in the two files. One is to get the
+	 * url by looking to the key and one is to control if the url is stored in the
+	 * memory.
+	 *
+	 * @param key     the generated key for the url
+	 * @param longURL the url that will be shortened
+	 */
+	private void putKeyInFiles(String key, String longUrl) throws UrlShortenerException {
 
 		try (Writer writerShortened = new BufferedWriter(
-				new OutputStreamWriter(new FileOutputStream(urlShortenerInFile.getShortenedFile(), true), "UTF-8"));
+				new OutputStreamWriter(new FileOutputStream(urlShortenerInFile.getShortenedFile(), true),
+						StandardCharsets.UTF_8));
 				Writer writerControl = new BufferedWriter(new OutputStreamWriter(
-						new FileOutputStream(urlShortenerInFile.getControlFile(), true), "UTF-8"));) {
+						new FileOutputStream(urlShortenerInFile.getControlFile(), true), StandardCharsets.UTF_8));) {
 			writerShortened.append(key + FILE_KEY_VALUE_SEPARATOR + longUrl + "\n");
 			writerControl.append(longUrl + FILE_KEY_VALUE_SEPARATOR + key + "\n");
 		} catch (IOException e) {
