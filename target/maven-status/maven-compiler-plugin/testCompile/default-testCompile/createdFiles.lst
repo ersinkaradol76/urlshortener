@@ -1,0 +1,5 @@
+com\urlshortener\util\UrlShortenerUtilTestFixtures.class
+com\urlshortener\service\UrlShortenerServiceTestFixtures.class
+com\urlshortener\util\UrlShortenerUtilTest.class
+com\urlshortener\service\UrlShortenerServiceTest.class
+com\urlshortener\controller\UrlShortenerControllerTest.class

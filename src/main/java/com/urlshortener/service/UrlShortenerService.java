@@ -123,6 +123,7 @@ public class UrlShortenerService {
 			}
 		} catch (Exception e) {
 			throw new UrlShortenerException(e.getMessage());
+
 		}
 		return urlKey;
 

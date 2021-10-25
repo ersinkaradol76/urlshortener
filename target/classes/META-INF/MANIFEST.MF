@@ -5,6 +5,6 @@ Implementation-Title: Spring Boot Web Thymeleaf URL Shortener Project
 Implementation-Version: 1.0
 Implementation-Vendor-Id: org.springframework.boot
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
- -starter-parent/web-thymeleaf
+ -starter-parent/rocketml-url-shortener
 Created-By: Maven Integration for Eclipse
 

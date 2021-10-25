@@ -9,7 +9,8 @@ public class UrlShortenerInFile {
 
 	private File controlFile; // long url - short url map to control
 
-	private static final String FILE_DIR = "./files/";
+	// private static final String FILE_DIR = "./files/";
+	private static final String FILE_DIR = "./";
 
 	private static final String SHORTENED_FILE_NAME = "shortened.txt";
 
